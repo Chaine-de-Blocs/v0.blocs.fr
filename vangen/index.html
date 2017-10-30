@@ -6,8 +6,54 @@
 		<script src="./bower_components/kjur-jsrsasign/jsrsasign-all-min.js" type="text/javascript"></script>
 		<script src="./Base58/Base58.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./gen.js" type="text/javascript"></script>
+		<script src="./index.js" type="text/javascript"></script>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="./style.css" />
 	</head>
 	<body>
-		<h1>hello</h1>
+		<header>
+			<h1>Générateur d'adresses Bitcoin</h1>
+		</header>
+		<section>
+			<div class="card" id="form">
+				<h2>Etape 1 : spécifie quel type d'adresse Bitcoin tu souhaites</h2>
+				<form id="pattern-form">
+					<div class="group">
+						<input type="text" name="pattern" onkeyup="onPatternChange(event)" maxlength="26" required />
+						<span class="highlight"></span>
+						<span class="bar"></span>
+						<label>Mot que tu souhaites avoir dans ton adresse</label>
+					</div>
+					<small>Ton adresse devrait ressembler à <strong id="addr-preview">1QLbz7JHiBTspS962RLKV8GndWE</strong></small><br />
+					<button onclick="generate(event, 5)" class="btn" type="button"><span>Générer</span></button>
+					&nbsp;<button onclick="stop(event)" class="btn red" type="button"><span>Stop</span></button>
+				</form>
+			</div>
+
+			<div class="card" id="result">
+				<h2>Etape 2 : ton ordinateur calcule les adresses et te proposera une adresse conforme avec sa clé privée</h2>
+				<div class="group">
+					<input type="text" value="" id="address" readonly />
+					<label>Adresse publique trouvée</label>
+				</div>
+				<div id="privkey" class="group">
+					<input type="password" value="" onclick="this.select();" readonly />
+					<label>Clé privée associée</label>
+					<a href="#" onclick="showPrivKey(event)">Afficher la clé privée</a>
+				</div>
+			</div>
+		</section>
+		<footer>
+			<div>
+				<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank"><i class="fa fa-youtube fa-2x"></i></a> - <a href="https://github.com/Chaine-de-Blocs/blocs.github.io/tree/master/vangen" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			</div>
+			<div id="donation">
+				Si tu aimes ce petit projet, contribue en faisant un petit don à l'adresse ci-dessous
+			</div>
+			<div id="copyright">
+				<span>Blocs © 2017</span>
+			</div>
+		</footer>
 	</body>
 </html>

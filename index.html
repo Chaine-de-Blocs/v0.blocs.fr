@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>La chaîne de Blocs</title>
+		<script src="./lib/particles.js/particles.min.js" type="text/javascript"></script>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div id="particles-js"></div>
+		<header>
+			<h1>Site en construction ! Tu peux me rejoindre sur <a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank">YouTube</a> en attendant !</h1>
+		</header>
+		<section>
+			<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank" id="profile"></a>
+			<div id="projects">
+				<p>
+					Projet : <a href="./vangen/index.html">Vangen</a>
+				</p>
+			</div>
+		</section>
+		<footer>
+			<div>
+				<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank"><i class="fa fa-youtube fa-2x"></i></a> - <a href="https://github.com/Chaine-de-Blocs/blocs.github.io" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			</div>
+			<div id="donation">
+
+			</div>
+			<div id="copyright">
+				<span>Blocs © 2017</span>
+			</div>
+		</footer>
+	</body>
+	<script>
+	var partJson = {
+			"particles": {
+				"number": {
+					"value": 80,
+					"density": {
+						"enable": true,
+						"value_area": 1200
+					}
+				},
+				"color": {
+					"value": "#4168FC"
+				},
+				"shape": {
+					"type": "polygon",
+					"stroke": {
+						"width": 0,
+						"color": "#000000"
+					},
+					"polygon": {
+						"nb_sides": 4
+					}
+				},
+				"opacity": {
+					"value": 0.2,
+					"random": true,
+					"anim": {
+						"enable": false,
+						"speed": 0.4,
+						"opacity_min": 0.1,
+						"sync": false
+					}
+				},
+				"size": {
+					"value": 7,
+					"random": true,
+					"anim": {
+						"enable": false,
+						"speed": 80,
+						"size_min": 0.1,
+						"sync": false
+					}
+				},
+				"line_linked": {
+					"enable": true,
+					"distance": 300,
+					"color": "#4168FC",
+					"opacity": 0.1,
+					"width": 2
+				},
+				"move": {
+					"enable": true,
+					"speed": 6,
+					"direction": "none",
+					"random": false,
+					"straight": false,
+					"out_mode": "out",
+					"bounce": false,
+					"attract": {
+						"enable": false,
+						"rotateX": 600,
+						"rotateY": 1200
+					}
+				}
+			},
+			"interactivity": {
+				"detect_on": "canvas",
+				"events": {
+					"onhover": {
+						"enable": false,
+						"mode": "repulse"
+					},
+					"onclick": {
+						"enable": true,
+						"mode": "push"
+					},
+					"resize": true
+				},
+				"modes": {
+					"grab": {
+						"distance": 800,
+						"line_linked": {
+							"opacity": 1
+						}
+					},
+					"bubble": {
+						"distance": 800,
+						"size": 80,
+						"duration": 2,
+						"opacity": 0.8,
+						"speed": 3
+					},
+					"repulse": {
+						"distance": 400,
+						"duration": 0.4
+					},
+					"push": {
+						"particles_nb": 4
+					},
+					"remove": {
+						"particles_nb": 2
+					}
+				}
+			},
+			"retina_detect": true
+		};
+		var jsonUri = "data:text/plain;base64," + window.btoa(JSON.stringify(partJson));
+		particlesJS.load('particles-js', jsonUri);
+	</script>
+</html>
