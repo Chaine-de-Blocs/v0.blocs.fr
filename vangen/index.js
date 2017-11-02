@@ -1,13 +1,7 @@
-var searchProcess = new Array();
+var searchProcesses = new Array();
 var baseAddr = '1QLbz7JHiBTspS962RLKV8GndWE';
-
-function toBytes(value) {
-	var arr = new Uint8Array(value.length / 2);
-	for (var i = 0; i < value.length; i += 2) {
-		arr[i / 2] = parseInt(value.substring(i, i + 2), 16);
-	}
-	return arr;
-}
+var nbAddr = 0;
+var timer;
 
 function onPatternChange(e) {
   var pat = document.querySelector('#pattern-form').elements.namedItem('pattern').value;
@@ -32,24 +26,59 @@ function showPrivKey(e) {
 
 function generate(e) {
 	e.preventDefault();
-	var pat = document.querySelector('#pattern-form').elements.namedItem('pattern').value;
+	nbAddr = 0;
 
-	searchProcess = setInterval(() => {
-		var addr = getNewAddress();
+	timer = setInterval(() => {
+		// TODO Timer with nbAddr calculated each seconds
+	}, 1000);
 
-		var pattMatch = addr.pub.slice(1, pat.length + 1);
+	searchProcesses[0] = new Worker('gen.js');
 
-		document.querySelector('#address').value = addr.pub;
+  // Only the first worker refresh the view for trial & error phase
+  searchProcesses[0].onmessage = function(e) {
+    nbAddr += 1;
 
-		if (pattMatch === pat) {
-			document.querySelector('#privkey input').value = addr.priv;
-			document.querySelector('#privkey').style.display = 'block';
-			stop(e);
-		}
-	});
+    refreshAddressesView(e.data.pub, null);
+
+    if (isValid(e.data.pub)) {
+  		refreshAddressesView(e.data.pub, e.data.priv);
+  		stop(null);
+  	}
+  }
+
+  // Runs 3 workers
+  for (var i = 1; i <= 3; i++) {
+    searchProcesses[i] = new Worker('gen.js');
+    searchProcesses[i].onmessage = function(e) {
+      nbAddr += 1;
+
+      if (isValid(e.data.pub)) {
+        refreshAddressesView(e.data.pub, e.data.priv);
+        stop(null);
+      }
+    }
+  }
+}
+
+function refreshAddressesView(pubAddress, privKey) {
+  document.querySelector('#address').value = pubAddress;
+
+  if (privKey) {
+    document.querySelector('#privkey input').value = privKey;
+    document.querySelector('#privkey').style.display = 'block';
+  }
+}
+
+function isValid(address) {
+  var pat = document.querySelector('#pattern-form').elements.namedItem('pattern').value;
+  var pattMatch = address.slice(1, pat.length + 1);
+  return pattMatch === pat;
 }
 
 function stop(e) {
-	e.preventDefault();
-	clearInterval(searchProcess);
+	if (e) e.preventDefault();
+  clearInterval(timer);
+  for (p of searchProcesses) {
+    p.terminate();
+  }
 }

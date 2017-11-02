@@ -1,4 +1,16 @@
-function getNewAddress() {
+var window = self;
+
+importScripts('./bower_components/kjur-jsrsasign/jsrsasign-all-min.js', './lib/Base58/Base58.js');
+
+function toBytes(value) {
+	var arr = new Uint8Array(value.length / 2);
+	for (var i = 0; i < value.length; i += 2) {
+		arr[i / 2] = parseInt(value.substring(i, i + 2), 16);
+	}
+	return arr;
+}
+
+do {
 	var ec = new KJUR.crypto.ECDSA({'curve': 'secp256k1'});
 
 	// Generates two randoms points (x,y) with corresponding public key and private key
@@ -45,8 +57,8 @@ function getNewAddress() {
 	// Final readable WIP
 	privkey = privkey.concat(privChecksum);
 
-	return {
+	postMessage({
 		pub: Base58.encode(toBytes(fullAddress)),
 		priv: Base58.encode(toBytes(privkey))
-	}
-}
+	});
+} while(true);
