@@ -60,6 +60,11 @@ function generate(e) {
   }
 }
 
+function refreshTimers(approxTime, timer) {
+  document.querySelector('#approx-time').innerHTML = approxTime;
+  document.querySelector('#timer').innerHTML = timer;
+}
+
 function refreshAddressesView(pubAddress, privKey) {
   document.querySelector('#address').value = pubAddress;
 

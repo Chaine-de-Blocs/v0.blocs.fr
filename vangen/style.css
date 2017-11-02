@@ -195,6 +195,24 @@ input:focus ~ .highlight {
   background-color: #CF000F;
 }
 
+#faq h1 {
+  margin-top: 0;
+}
+
+#faq p {
+  line-height: 25px;
+}
+
+#faq ul li {
+  line-height: 25px;
+}
+
+.center {
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
 #donation {
   margin-top: 10px;
 }

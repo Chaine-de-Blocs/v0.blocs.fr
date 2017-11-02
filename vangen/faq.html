@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Génère ton adresse Bitcoin - FAQ</title>
+		<meta name="description" content="Générateur d'adresses Bitcoin selon ce qu'on souhaite ce quels caractères elle doit contenir" />
+		<meta name="author" content="Blocs" />
+		<meta name="keywords" content="Blockchain, Cryptomonnaie, Bitcoin, Monero, Lisk, YouTube, Chaîne de bloc" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="shortcut icon" type="image/png" href="../assets/img/favicon.png"/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="../font-awesome-4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+    <header>
+      <a href="./index.html"><i class="fa fa-arrow-left"></i> Retour</a>
+    </header>
+		<section id="faq">
+			<div class="card">
+				<h1>Qu'est ce que c'est ?</h1>
+				<p>Cela s'appelle le "Vanity Generator". Le principe est d'obtenir une adresse Bitcoin avec des caractères qu'on aimerait qu'elle comporte.</p>
+				<p>Une adresse Bitcoin peut contenir à peut près tous les caractères dont des chiffres. Voici une adresse :</p>
+				<p>1Pr6uixbygbkAEGsqNvhA4wNzPQyDv1BiD</p>
+				<p>Grâce au vanity generator il est possible d'obtenir une adresse qui contient un mot, par exemple "Vanity", ce qui donnerait :</p>
+				<p>1<u>Vanity</u>bygbkAEGsqNvhA4wNzPQyDv1BiD</p>
+				<p>Evidemment n'avoir que l'adresse publique n'est pas très utile, le vanity generator calcule la clé privée de l'adresse permettant alors de manipuler ses fonds.</p>
+			</div>
+
+			<div class="card">
+				<h1>À quoi ça sert au juste ?</h1>
+				<p>C'est utile afin d'avoir une adresse disons usuelle. Admettons Google se met à utiliser Bitcoin comme moyen de paiement, ils pourraient chercher une adresse du genre :</p>
+				<p>1GooglebygbkAEGsqNvhA4wNzPQyDv1BiD</p>
+				<p>C'est certes quelque peu d'ordre esthétique, mais c'est cool !</p>
+			</div>
+
+			<div class="card">
+				<h1>Comment ça marche ?</h1>
+				<p>Ce site choisi de façon aléatoire une clé privée pour en déduire une adresse publique. Si l'adresse publique possède les caractères souhaités, alors il retourne le résultat et affiche l'adresse publique avec sa clé privée.</p>
+				<p>Il existe plusieurs vanity generator sur Internet mais il sont basés sur des pools de mineurs. Cela signifie que l'adresse est calculée par des machines distantes. Ce site fonctionne uniquement avec le client, c'est-à-dire que seul ton ordinateur travaille pour trouver la bonne adresse. Il est alors possible de faire fonctionner le site hors-ligne. Cependant, ça a le défaut d'être très lent comparé aux fermes de mineurs optimisés pour ce genre de calcule.</p>
+				<p><a href="https://github.com/Chaine-de-Blocs/blocs.github.io/tree/master/vangen" target="_blank">Voir le code source</a></p>
+			</div>
+
+			<div class="card">
+				<h1>Est-ce que je peux utiliser l'adresse que ce site trouve ?</h1>
+				<p>Oui. Il est cependant recommandé d'utiliser l'adresse uniquement pour recevoir des fonds et non pour effectuer des paiements. Pour récupérer les fonds d'une adresse il existe une méthode sécurisée et pratique qui s'appelle le "<a href="https://99bitcoins.com/know-more-private-key-import-vs-sweep-difference/">balayage</a>"</p>
+			</div>
+
+			<div class="card">
+				<h1>Le site ne trouve pas mon adresse...</h1>
+				<p>Ce n'est pas une question ça ! Il y a deux considérations à prendre :</p>
+				<ul>
+					<li>
+						La difficulté pour trouver une adresse monte très rapidement avec le nombre de caractères souhaités. Arrivé à 3 caractères il faut déjà attendre des <u>dizaines de minutes</u> voire <u>une heure</u> afin d'obtenir une adresse.
+					</li>
+					<li>
+						Bitcoin utilise un système permettant d'éviter l'ambiguité. A ce titre une adresse ne peut pas contenir les caractères suivants : "0", "O", "I" et "l". Si tu cherches une adresse qui comporte ces caractères, le système ne la trouvera jamais. Tu peux "contourner" cela en utilisant par exemple "1 (le chiffre un)" pour faire le "l (la lettre L minuscule)".
+					</li>
+				</ul>
+			</div>
+
+			<div class="card">
+				<h1>Si le site trouve l'adresse rapidement, ça veut dire que tout le monde la trouvera rapidement et facilement ?</h1>
+				<p>Non. Amettons que je cherche une adresse qui commence par 2 caractères spécifiques "GG", le système trouvera une adresse du style :</p>
+				<p>1GGlfj3bygbkAEGsqNvhA4wNzPQyDv1BiD</p>
+				<p>La difficulté pour trouver une telle adresse est faible. En réalité c'est parce qu'il existe énormément d'adresses commençant par "GG"*, soit 2<sup>144</sup>, que le système ait été capable de trouver une adresse aussi vite. Il a donc "pioché" une adresse commençant par les caractères souhaités parmis une quantité astronomique d'adresses comportant ces caractères. La recherche est aléatoire et c'est la meilleure méthode.</p>
+				<p><small>* La difficulté pour trouver une adresse ne réside pas que dans la quantités d'adresse, voir <a href="https://en.bitcoin.it/wiki/Vanitygen#Difficulty_of_finding_a_vanity" target="_blank">ici</a>.</small></p>
+			</div>
+		</section>
+		<footer>
+			<div>
+				<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank"><i class="fa fa-youtube fa-2x"></i></a> - <a href="https://github.com/Chaine-de-Blocs/blocs.github.io/tree/master/vangen" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+			</div>
+			<div id="donation">
+				<p>Si tu aimes ce petit projet, contribue en faisant un petit don à l'adresse ci-dessous</p>
+				<p><strong>1Pr6uixbygbkAEGsqNvhA4wNzPQyDv1BiD</strong></p>
+			</div>
+			<div id="copyright">
+				<span>Blocs © 2017</span>
+			</div>
+		</footer>
+	</body>
+</html>
