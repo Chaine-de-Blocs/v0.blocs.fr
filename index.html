@@ -7,19 +7,58 @@
 		<meta name="author" content="Blocs" />
 		<meta name="keywords" content="Blockchain, Cryptomonnaie, Bitcoin, Monero, Lisk, YouTube, Chaîne de bloc" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<script src="./lib/particles/particles.js" type="text/javascript"></script>
+		<script src="./assets/js/particles.min.js" type="text/javascript"></script>
+		<script src="./assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+		<script src="https://d2ncq0durb0run.cloudfront.net/3d5bdf107de596ce77e8ce48a61b585f52bbb61d-1/wooble.js" type="text/javascript"></script>
 		<link rel="shortcut icon" type="image/png" href="./assets/img/favicon.png"/>
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="./style.css" />
+		<link rel="stylesheet" href="./assets/css/flexboxgrid.min.css" />
 	</head>
 	<body>
 		<div id="particles-js"></div>
-		<header>
-			<h1>Site en construction ! Tu peux me rejoindre sur <a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank">YouTube</a> en attendant !</h1>
-		</header>
-		<section>
-			<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank" id="profile"></a>
+		<section id="main">
+			<div class="row">
+				<div class="col-md-5">
+					<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank" id="profile"></a>
+					<p id="desc">
+						Bienvenue ! Je suis Jonathan et ce site présente des projets relatifs à la technologie blockchain. Tu peux faire un don, si tu le souhaites, et découvrir ce que je produis en te rendant sur ma chaîne <a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw" target="_blank">YouTube</a> !
+					</p>
+				</div>
+				<div class="col-md-7">
+					<h1>Merci pour vos dons !</h1>
+					<div id="donations"></div>
+					<div class="row">
+						<div class="col-md-7">
+							<div class="addresses">
+								<h2>Mes adresses</h2>
+								<p class="adresses">
+									Bitcoin : 1BLoCSiMsDPtza55ZdtqjnPdvFfTHhpHaM
+								</p>
+							</div>
+						</div>
+						<div class="col-md-5">
+							<form id="send-message">
+								<label>Ton pseudonyme</label>
+								<input name="author" type="text" required />
+
+								<label>Ton message</label>
+								<textarea name="text"></textarea>
+
+								<label>Quelle cryptomonnaie as-tu donné ?</label>
+								<select name="crypto" id="select-crypto" required></select>
+
+								<label>Identifiant de la transaction (TXID)</label>
+								<input name="txid" type="text" required />
+
+								<button type="submit">Envoyer</button>
+							</form>
+							<div id="alert"></div>
+						</div>
+					</div>
+				</div>
+			</div>
 			<div id="projects">
 				<p>
 					Projet : <a href="./vangen/index.html">Vangen</a>
@@ -28,19 +67,72 @@
 		</section>
 		<footer>
 			<div>
-				<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw?view_as=subscriber" target="_blank"><i class="fa fa-youtube fa-2x"></i></a> - <a href="https://github.com/Chaine-de-Blocs/blocs.github.io" target="_blank"><i class="fa fa-github fa-2x"></i></a>
+				<a href="https://www.youtube.com/channel/UCjvOu6faxxmqE6ZHTLR5qmw" target="_blank"><i class="fa fa-youtube fa-2x"></i></a> - <a href="https://github.com/Chaine-de-Blocs/blocs.github.io" target="_blank"><i class="fa fa-github fa-2x"></i></a>
 			</div>
 			<div id="donation">
 				<p>Contribue au projet en faisant une petite donation Bitcoin à l'adresse ci-dessous</p>
-				<p><strong>1Pr6uixbygbkAEGsqNvhA4wNzPQyDv1BiD</strong></p>
+				<p><strong>1BLoCSiMsDPtza55ZdtqjnPdvFfTHhpHaM</strong></p>
 			</div>
 			<div id="copyright">
 				<span>Blocs © 2017</span>
 			</div>
 		</footer>
 	</body>
-	<script>
-	var partJson = {
+	<script type="text/javascript">
+		var API_URL = 'https://cryptodon.herokuapp.com';
+		$.get(API_URL + '/cryptos', function (cryptos, status) {
+			var selectCrypto = $('#select-crypto');
+			for (var crypto of cryptos) {
+				selectCrypto.append($('<option>', {
+					value: crypto._id,
+					text: crypto.name + ` (${crypto.ticker})`
+				}));
+			}
+		});
+
+		$.get(API_URL + '/messages', function (messages, status) {
+			var messagesToShow = new Array();
+			for (var mess of messages) {
+				messagesToShow.push({
+					title: `${mess.value} ${mess.crypto.ticker} par ${mess.author}`,
+					text: mess.text
+				});
+			}
+			Wb('textShow').init('#donations', { messages: messagesToShow });
+		});
+
+		$('#send-message').on('submit', function (e) {
+			e.preventDefault();
+			var data = $(this).serializeArray();
+			var message = {
+				author: data[0].value,
+				text: data[1].value,
+				crypto: { _id: data[2].value },
+				txid: data[3].value
+			};
+
+			var alert = $('#alert');
+			$.post(API_URL + '/messages', message, function (res) {
+				alert.addClass('success');
+				alert.text('Ton message a bien été enregistré, merci !');
+			}).fail(function (err) {
+				alert.addClass('failed');
+				switch (err.responseJSON.code) {
+					case 1:
+						alert.text('Cette transaction n\'existe pas !');
+						break;
+					case 2:
+						alert.text('Cette transaction n\'envoie pas de fond à un mon adresse');
+						break;
+					default:
+
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+		var partJson = {
 			"particles": {
 				"number": {
 					"value": 80,
@@ -147,6 +239,15 @@
 		};
 		var jsonUri = "data:text/plain;base64," + window.btoa(JSON.stringify(partJson));
 		particlesJS.load('particles-js', jsonUri);
+
+		var messages = [{
+			title: '1BTC de Johann',
+			text: 'Merci pour tes videos'
+		},
+		{
+			title: '0,001BTC de Paul',
+			text: 'Ahah'
+		}];
 	</script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-80538061-4"></script>
