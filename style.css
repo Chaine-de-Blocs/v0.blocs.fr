@@ -25,7 +25,7 @@ label {
   display: block;
   width: 250px;
   height: 250px;
-  border-radius: 50%;
+  border-radius: 65%;
 
   margin: 0 auto;
   margin-bottom: 15px;
@@ -41,9 +41,13 @@ label {
 }
 
 #desc {
-  width: 50%;
+  width: 65%;
   margin: 0 auto;
   line-height: 26px;
+}
+
+.project {
+  text-align: left;
 }
 
 #profile:hover {
@@ -51,7 +55,7 @@ label {
 }
 
 #projects {
-  text-align: center;
+  padding: 15px 0;
 }
 
 #particles-js {
@@ -87,6 +91,10 @@ input, select, textarea {
   line-height: 25px;
 }
 
+.address {
+  word-wrap: break-word;
+}
+
 #alert.success {
   color: #2B63FF;
 }
@@ -114,9 +122,11 @@ textarea {
   resize: vertical;
 }
 
+.no-margin-top {
+  margin-top: 0;
+}
+
 .addresses {
-  display: inline-block;
-  margin: 0 auto;
   padding: 10px;
   border-width: 1px;
   border-style: solid;
