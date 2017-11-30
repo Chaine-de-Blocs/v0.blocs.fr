@@ -9,7 +9,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="./assets/js/particles.min.js" type="text/javascript"></script>
 		<script src="./assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
-		<script src="https://d2ncq0durb0run.cloudfront.net/3d5bdf107de596ce77e8ce48a61b585f52bbb61d-3/wooble.js" type="text/javascript"></script>
+		<script src="https://d2ncq0durb0run.cloudfront.net/3d5bdf107de596ce77e8ce48a61b585f52bbb61d-4/wooble.js" type="text/javascript"></script>
 		<link rel="shortcut icon" type="image/png" href="./assets/img/favicon.png"/>
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 		<link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
@@ -51,7 +51,7 @@
 								<textarea name="text"></textarea>
 
 								<label>Quelle cryptomonnaie as-tu donné ?</label>
-								<select name="crypto" id="select-crypto" required></select>
+								<select name="crypto" id="select-crypto"></select>
 
 								<label>Identifiant de la transaction (TXID)</label>
 								<input name="txid" type="text" required />
@@ -104,6 +104,8 @@
 
 		Wb('cardous').init('.project', vanGen);
 
+		var txtShow;
+
 		$.get(API_URL + '/messages', function (messages, status) {
 			var messagesToShow = new Array();
 			for (var mess of messages) {
@@ -112,11 +114,14 @@
 					text: mess.text
 				});
 			}
-			Wb('textShow').init('#donations', { messages: messagesToShow });
+			Wb('textShow').init('#donations', { messages: messagesToShow }).then(obj => {
+				txtShow = obj;
+			});
 		});
 
 		$('#send-message').on('submit', function (e) {
 			e.preventDefault();
+
 			var data = $(this).serializeArray();
 			var message = {
 				author: data[0].value,
@@ -129,6 +134,9 @@
 			$.post(API_URL + '/messages', message, function (res) {
 				alert.addClass('success');
 				alert.text('Ton message a bien été enregistré, merci !');
+				if (txtShow) {
+					txtShow.pushMessage({title: `${mess.value} ${mess.crypto.ticker} par ${mess.author}`, text: message.text});
+				}
 			}).fail(function (err) {
 				alert.addClass('failed');
 				switch (err.responseJSON.code) {
