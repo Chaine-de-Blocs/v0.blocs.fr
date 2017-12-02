@@ -135,7 +135,7 @@
 				alert.addClass('success');
 				alert.text('Ton message a bien été enregistré, merci !');
 				if (txtShow) {
-					txtShow.pushMessage({title: `${mess.value} ${mess.crypto.ticker} par ${mess.author}`, text: message.text});
+					txtShow.pushMessage({title: `${message.value} ${message.crypto.ticker} par ${message.author}`, text: message.text});
 				}
 			}).fail(function (err) {
 				alert.addClass('failed');
