@@ -46,6 +46,26 @@ label {
   line-height: 26px;
 }
 
+.video-wrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+  margin-top: 25px;
+	height: 0;
+}
+.video-wrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 90%;
+	height: 90%;
+}
+
+#socials {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
 .project {
   text-align: left;
 }
@@ -150,6 +170,12 @@ a:focus .fa-github, a:hover .fa-github {
 }
 a:focus .fa-youtube, a:hover .fa-youtube {
   color: #E01716;
+}
+a:focus .fa-medium, a:hover .fa-medium {
+  color: #7AE174;
+}
+a:focus .fa-twitter, a:hover .fa-twitter {
+  color: #77AADC;
 }
 
 footer {
