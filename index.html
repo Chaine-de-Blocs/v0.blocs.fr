@@ -81,7 +81,8 @@
 			<div id="projects">
 				<h1>Projets sur la cryptomonnaie</h1>
 				<div class="row">
-					<div class="col-md-2 project"></div>
+					<div class="col-md-3" id="vangen"></div>
+					<div class="col-md-3" id="demoscratos"></div>
 				</div>
 			</div>
 		</section>
@@ -108,13 +109,20 @@
 		});
 
 		var vanGen = {
-			href: './vangen/index.html',
+			href: './vangen',
 			title: 'Vanity Gen',
 			description: 'Générateur d\'adresse Bitcoin personnalisée !',
 			imgUrl: './assets/img/vanity.jpeg'
 		};
+		var dCratos = {
+			href: './smart-demoscratos',
+			title: 'Demoscratos',
+			description: 'La démocratie sous contrat intelligent avec Ethereum',
+			imgUrl: './assets/img/demoscratos.jpeg'
+		};
 
-		Wb('cardous').init('.project', vanGen);
+		Wb('cardous').init('#vangen', vanGen);
+		Wb('cardous').init('#demoscratos', dCratos);
 
 		var txtShow;
 
