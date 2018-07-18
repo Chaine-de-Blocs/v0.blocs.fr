@@ -98,6 +98,7 @@ class StackExecutor {
 			case 'OP_ENDIF':
 				break;
 			case 'OP_ELSE':
+				// OP_ELSE evaluates only if a OP_IF has been evaluated
 				if (!this.isJump) {
 					for (let i = this.stepIndex; i < this.script.length; i++) {
 						if (this.script[i] == 'OP_ENDIF') {
