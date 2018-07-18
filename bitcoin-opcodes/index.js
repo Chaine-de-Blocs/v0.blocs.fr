@@ -20,7 +20,7 @@ function submitEditor(e, execFullStack) {
       exec.nextStep();
       renderStack(exec.stack);
     }
-  } else {
+  } else if (!exec.isTerminated()) {
     exec.nextStep();
     renderStack(exec.stack);
   }
@@ -60,7 +60,9 @@ function renderStack(stack) {
 function renderResult(_exec) {
   let resDiv = document.querySelector('#result');
   if (_exec.result) {
-    resDiv.innerHTML = `<h2>La transaction est valide !</h2>`;
+    resDiv.innerHTML = `<h2>Le script est valide !</h2>`;
+  } else {
+    resDiv.innerHTML = `<h2>Le script est invalide !</h2>`;
   }
 }
 
