@@ -28,6 +28,7 @@ a:focus .fa-youtube, a:hover .fa-youtube {
 
 .group {
   position: relative;
+  margin-bottom: 30px;
 }
 .group:not(:first-of-type) {
   margin-top: 50px;
