@@ -17,6 +17,7 @@ const CODES = {
   OP_SUB: '<INPUT INPUT> Substract them',
 
   OP_DUP: '<INPUT> Duplicate the input and put it in the stack',
+	OP_DROP: 'Removes the top stack item.',
 
   OP_HASH160: '<INPUT> The input is hashed twice: first with SHA-256 and then with RIPEMD-160.',
 
@@ -25,6 +26,8 @@ const CODES = {
 
   OP_EQUALVERIFY: 'Same as OP_EQUAL, but runs OP_VERIFY afterward.',
   OP_CHECKSIG: 'check tx signature',
+	OP_CHECKMULTISIG: 'Compares the first signature against each public key until it finds an ECDSA match.',
+	OP_CHECKSEQUENCEVERIFY: 'Marks transaction as invalid if the relative lock time of the input',
 
 	OP_IF: 'If the top stack value is not False, the statements are executed. The top stack value is removed.',
 	OP_ELSE: 'If the preceding OP_IF or OP_NOTIF or OP_ELSE was not executed then these statements are and if the preceding OP_IF or OP_NOTIF or OP_ELSE was executed then these statements are not.',
@@ -44,7 +47,7 @@ class StackExecutor {
 	}
 
 	nextStep() {
-	  let calcVal, doVerify, stackVal;
+	  let calcVal, doVerify, verify, stackVal;
   	let code = this.script[this.stepIndex];
     let stackLastIndex = this.stack.length - 1;
   	switch(code) {
@@ -127,6 +130,11 @@ class StackExecutor {
 
         break;
 
+			case 'OP_DROP':
+				this.stack.splice(stackLastIndex, 1);
+
+				break;
+
       case 'OP_HASH160':
       	let sha256 = CryptoJS.SHA256(this.stack[stackLastIndex]).toString();
 
@@ -138,24 +146,35 @@ class StackExecutor {
       case 'OP_EQUALVERIFY':
       	doVerify = true;
       case 'OP_EQUAL':
-      	let equal = this.stack[stackLastIndex] == this.stack[stackLastIndex - 1];
+				if (!doVerify) {
+					let equal = this.stack[stackLastIndex] == this.stack[stackLastIndex - 1];
 
-        // Removes inputs
-        this.stack.splice(stackLastIndex - 1, 2);
+					// Removes inputs
+					this.stack.splice(stackLastIndex - 1, 2);
 
-        this.stack.push(equal ? 1 : 0);
+					this.stack.push(equal ? 1 : 0);
 
-      	stackLastIndex = this.stack.length - 1;
+					stackLastIndex = this.stack.length - 1;
 
-        if (!doVerify) break;
+					break;
+				}
+
+				verify = verify ? verify : this.stack[stackLastIndex] == this.stack[stackLastIndex - 1];
     	case 'OP_VERIFY':
-      	let input = this.stack[stackLastIndex];
+				if (!verify) {
+					verify = this.stack[stackLastIndex];
+				}
 
-        this.stack.splice(stackLastIndex, 1);
-
-      	if (input != 1) {
+      	if (verify != 1) {
 					this.result = false;
 					return;
+				}
+
+				break;
+
+			case 'OP_CHECKSEQUENCEVERIFY':
+				if (this.stack[stackLastIndex] > nSequence) {
+					return false;
 				}
 
 				break;
@@ -172,6 +191,26 @@ class StackExecutor {
 
         this.stack.push(1);
         break;
+			case 'OP_CHECKMULTISIG':
+				let n = this.stack[stackLastIndex];
+				let m = this.stack[stackLastIndex - n - 1];
+				let pubsIndex = stackLastIndex - n;
+				let sigsIndex = pubsIndex - m - 1;
+
+				// Public keys
+				let pubs = this.stack.slice(pubsIndex, this.stack.length - 1);
+
+				// Signatures
+				let sigs = this.stack.slice(sigsIndex, this.stack.length - pubs.length - 2);
+
+				// delete n <pub, pub, pub, ...> m
+				this.stack.splice(sigsIndex);
+
+				// TODO Check multi sig using ECDSA (m-n)
+
+				this.stack.push(1);
+
+				break;
 
     	default:
       	this.stack.push(code);

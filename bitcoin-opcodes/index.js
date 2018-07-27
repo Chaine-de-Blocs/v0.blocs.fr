@@ -1,5 +1,24 @@
 let exec;
 
+let nSequence = 0;
+
+let incSeq;
+
+function startSeqInc() {
+  clearTimeout(incSeq);
+  incSeq = setInterval(() => {
+    nSequence += 1;
+    document.querySelector('#seq-num').innerHTML = nSequence;
+  }, 1000);
+}
+
+function resetSeqInc() {
+  clearTimeout(incSeq);
+  nSequence = 0;
+
+  document.querySelector('#seq-num').innerHTML = nSequence;
+}
+
 function submitEditor(e, execFullStack) {
   e.preventDefault();
   e.stopPropagation();
@@ -11,17 +30,24 @@ function submitEditor(e, execFullStack) {
 
   if (!exec) {
     exec = new StackExecutor(stack, script);
+    startSeqInc();
     renderStack(exec.stack);
   }
 
   if (execFullStack) {
     let res;
     while(!exec.isTerminated()) {
-      exec.nextStep();
+      res = exec.nextStep();
+      if (res === false) {
+        renderResult(null);
+      }
       renderStack(exec.stack);
     }
   } else if (!exec.isTerminated()) {
-    exec.nextStep();
+    res = exec.nextStep();
+    if (res === false) {
+      renderResult(null);
+    }
     renderStack(exec.stack);
   }
 
@@ -59,14 +85,20 @@ function renderStack(stack) {
 
 function renderResult(_exec) {
   let resDiv = document.querySelector('#result');
+  if (!_exec) {
+    resDiv.innerHTML = `<p>Le script est verouillé suite à un VERIFY qui a échoué</p>`;
+    return;
+  }
+
   if (_exec.result) {
-    resDiv.innerHTML = `<h2>Le script est valide !</h2>`;
+    resDiv.innerHTML = `<p>Le script est valide !</p>`;
   } else {
-    resDiv.innerHTML = `<h2>Le script est invalide !</h2>`;
+    resDiv.innerHTML = `<p>Le script est invalide !</p>`;
   }
 }
 
 function reset(e){
+  resetSeqInc();
   exec = null;
   document.querySelector('#result').innerHTML = '';
   document.querySelector('#opcode').innerHTML = '';
